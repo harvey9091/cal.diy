@@ -23,4 +23,7 @@ RUN yarn workspace @calcom/api-v2 run build
 
 EXPOSE 80
 
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD node -e "const http=require('http');http.get('http://localhost:5555/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+
 CMD [ "yarn", "workspace", "@calcom/api-v2", "start:prod"]
